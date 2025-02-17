@@ -1,0 +1,57 @@
+* 프로젝트 생성
+terminal 경로: /c/korea-gpt/react
+npx create-react-app react-study     -> 19버전
+프로젝트 폴더로 이동
+
+* 18버전 다운그레이드
+terminal 경로: /c/korea-gpt/react/react-study
+npm install react@18
+npm install react-dom@18
+npm install @testing-library/jest-dom@5.17.0
+npm install @testing-library/react@13.4.0
+npm install @testing-library/user-event@13.5.0
+npm install web-vitals
+
+npm install react-router-dom recoil react-query axios
+
+npm install @mui/material @emotion/react @emotion/styled
+
+이후 react-study 의 package.json 파일에서 dependencies 확인
+"dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "cra-template": "1.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^4.2.4"
+  },
+
+
+* node_modules 폴더가 없을 때
+npm install
+입력하면 package.json에 등록된 라이브러리 자동 설치
+
+* 프로젝트 실행
+프로젝트 폴더로 꼭 이동한 다음에 실행! (경로에 main 적혀있는지 확인! ex /c/korea-gpt/react/react-study (main))
+npm start
+
+* 함수파일, 폴더 이름 잘못 설정한 경우    // ex. 컴포넌트 함수 파일 이름을 소문자로 시작한 경우(Hello > hello)
+0. 아예 삭제 후 다시 생성해도 됨
+0-1. 이름 바꿔보기 (안되면 아래 실행)
+1. 해당 함수를 사용하는 파일에서 import 지우기 (함수 사용하는 태그는 안지워도 됨)
+2. 파일 복붙
+3. 원본 파일 삭제
+4. vscode 껐다 켜기
+5. 복사 파일 명 바꾸기
+6. 1번의 파일에서 import 되는지 확인
+7. 안되면 3번에서 파일이 아닌 폴더로 진행
+#. vscode 를 껐다 키면 서버를 재실행해야함(terminal 창에 명령어 npm start 입력)
+##. 일반적인 상황에서 서버를 재실행하길 원하는 경우 - terminal 창에 ctrl+c 입력(취소 단축키) 후 명령어 npm start 입력
+
+* port:3001 인경우 (300n)
+서버가 하나 더(n개 더) 생성된 것
+의도한 것이라면 문제 X, but 대부분의 경우 서버 하나로 개발
+따라서, terminal 에서 bash 가 하나인지 확인. 두 개 이상인 경우 하나 휴지통으로
+혹은 vscode 가 하나 더 실행되고 있는지 확인.
