@@ -16,6 +16,11 @@ npm install react-router-dom recoil react-query axios
 
 npm install @mui/material @emotion/react @emotion/styled
 
+npm install jwt-decode
+
+npm uninstall react-query
+npm i @tanstack/react-query
+
 이후 react-study 의 package.json 파일에서 dependencies 확인
 "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
