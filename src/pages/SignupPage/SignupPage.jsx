@@ -49,7 +49,7 @@ function SignupPage(props) {
     }
 
     const handleSignupButtonOnClick = async () => {
-        if(Object.entries(errors).filter(entry => !!entry[1]) > 0) {
+        if(Object.entries(errors).filter(entry => !!entry[1]).length > 0) {
             return;
         }
         try {
@@ -120,7 +120,7 @@ function SignupPage(props) {
                                 onBlur={handleInputOnBlur}
                                 error={!!errors.email}
                                 helperText={errors.email} />
-                            <Button variant="contained" onClick={handleSignupButtonOnClick}>가입하기</Button>
+                            <Button variant='contained' onClick={handleSignupButtonOnClick}>가입하기</Button>
                         </Box>
                         <Typography variant='h6' textAlign={'center'}>
                             이미 계정이 있나요? <Link to={"/signin"}>로그인</Link>

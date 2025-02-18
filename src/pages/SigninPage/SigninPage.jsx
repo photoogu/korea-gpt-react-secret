@@ -1,7 +1,8 @@
 import { Box, Button, Card, CardContent, Container, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { api } from '../../api/config/axiosConfig';
+import { api, setAccessToken } from '../../api/config/axiosConfig';
+import { useQueryClient } from '@tanstack/react-query';
 
 /**
  * 로그인 요구사항
@@ -13,6 +14,7 @@ import { api } from '../../api/config/axiosConfig';
 
 function SigninPage(props) {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const [ signinInput, setSigninInput ] = useState({
         username: "",
@@ -23,6 +25,8 @@ function SigninPage(props) {
         username: "",
         password: "",
     });
+
+    const [ isSigninError, setSigninError ] = useState(false);
     
     const handleSigninInputOnChange = (e) => {
         setSigninInput({
@@ -33,38 +37,26 @@ function SigninPage(props) {
 
     const handleInputOnBlur = (e) => {
         const { name, value } = e.target;
-        let message = "";
-        if (name === "username" && value === "") {
-            message = "사용자 이름을 입력해주세요.";
-        }
-        if (name === "password" && value === "") {
-            message = "비밀번호를 입력해주세요.";
-        }
-        setErrors({
-            ...errors,
-            [name]: message,
-        })
+        setErrors(prev => ({    // 람다식이기 때문에 객체를 바로 리턴하기 위해서는 () 사용 필요!
+            ...prev,
+            [name]: !(value.trim()) ? `${name}을 입력하세요.` : "", // 공백 체크
+        }));
     }
 
     const handleSigninButtonOnClick = async () => {
-        if (Object.entries(errors).filter(entry => !!entry[1]) > 0) {
+        if (Object.entries(errors).filter(entry => !!entry[1]).length > 0) {
             return;
         }
-        console.log(signinInput);
         try {
             const response = await api.post("/api/auth/signin", signinInput);
-            // const accessToken = response.data.data.accessToken;
-            console.log(response);
-
-            // localStorage.setItem("AccessToken", accessToken)
-
-            alert("로그인 성공!");
+            const accessToken = response.data.data;
+            setAccessToken(accessToken);
+            queryClient.invalidateQueries({ queryKey: ["userQuery"] });
             navigate("/");
+            // window.location.replace("/");
+            // window.location.href = "/";
         } catch (error) {
-            setErrors({
-                username: "사용자 정보를 다시 확인해주세요",
-                password: "",
-            });
+            setSigninError(true);
         }
     }
 
@@ -85,7 +77,13 @@ function SigninPage(props) {
                                 onBlur={handleInputOnBlur}
                                 error={!!errors.password}
                                 helperText={errors.password} />
-                            <Button variant="contained" onClick={handleSigninButtonOnClick}>로그인</Button>
+                            {
+                                isSigninError &&
+                                <Typography variant='body2' textAlign={'center'} color='red'>
+                                    사용자 정보를 다시 확인하세요.
+                                </Typography>
+                            }
+                            <Button variant='contained' onClick={handleSigninButtonOnClick}>로그인</Button>
                         </Box>
                         <Typography variant='h6' textAlign={'center'}>
                             계정이 없으신가요? <Link to={"/signup"}>회원가입</Link>
